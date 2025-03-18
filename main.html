@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FIntros Dev - Game Developer specializing in Unity, Python, and AI-driven gameplay. Check out my portfolio and projects.">
+    <meta name="keywords" content="game developer, Unity, Python, AI, game portfolio, programming, game development">
+    <meta name="author" content="FIntros Dev">
+    <title>FIntros Dev - Portfolio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #0f0f0f;
+            color: #00ffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #1a1a1a;
+            border-bottom: 2px solid #00ffff;
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('hahayes.webp');
+            background-size: cover;
+            background-position: center;
+            color: #00ffff;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-attachment: fixed;
+        }
+
+        .btn-primary {
+            background-color: #00ffff;
+            border: none;
+            color: #000;
+            font-weight: bold;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            background-color: #009c99;
+            transform: scale(1.1);
+        }
+
+        .card {
+            background-color: #1b1b1b;
+            color: #00ffff;
+            border: 1px solid #00ffff;
+            transition: transform 0.3s ease-in-out;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .card:hover {
+            transform: scale(1.1);
+        }
+
+        .row.g-4 {
+            row-gap: 40px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                padding: 50px 20px;
+            }
+            .navbar .container {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Skills Section */
+        .skills-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .skills-text {
+            flex: 1;
+            text-align: left;
+            padding: 20px;
+        }
+
+        .skills-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .skills-image img {
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">FIntros Dev - Game Developer & Editor</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li> <!-- Skills link added -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero text-center">
+        <div>
+            <h1 class="fw-bold">Welcome to FIntros Dev</h1>
+            <p class="fw-bold">Building immersive game experiences with Unity</p>
+            <a href="#projects" class="btn btn-primary">View My Work</a>
+            <a href="https://www.youtube.com/@FIntros_dev" class="btn btn-primary" target="_blank">YouTube</a>
+            <a href="https://github.com/Fintrosdev" class="btn btn-primary" target="_blank">GitHub</a>
+        </div>
+    </header>
+
+    <!-- About Me Section -->
+    <section id="about" class="container text-center py-5">
+        <h2 class="fw-bold">About Me</h2>
+        <p>I'm a 16-year-old passionate game developer specializing in Unity, an intermediate in Python, and a skilled video editor. I have experience developing multiplayer games, AI-driven mechanics, and immersive gameplay experiences. I keep upgrading myself with the latest technologies, aiming to join Halo Studios to help build my favorite game, Halo, which gave me countless memories.</p>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="container text-center py-5">
+        <h2 class="fw-bold">My Skills</h2>
+        <div class="skills-container">
+            <!-- Left side (text) -->
+            <div class="skills-text">
+                <h4>Unity - 75%</h4>
+                <div class="progress" style="height: 20px;">
+                    <div class="progress-bar" style="width: 75%; background-color: #00ffff;"></div>
+                </div>
+                <h4>Python - 98%</h4>
+                <div class="progress" style="height: 20px;">
+                    <div class="progress-bar" style="width: 98%; background-color: #00ffff;"></div>
+                </div>
+                <h4>Video Editing - 90%</h4>
+                <div class="progress" style="height: 20px;">
+                    <div class="progress-bar" style="width: 90%; background-color: #00ffff;"></div>
+                </div>
+            </div>
+            <!-- Right side (skills image) -->
+            <div class="skills-image">
+                <img src="skills.webp" alt="Skills Image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="container text-center py-5">
+        <div class="container">
+            <h2 class="fw-bold mb-4">Projects</h2>
+            <div class="row g-4 justify-content-center">
+                <!-- Old Projects -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3 class="fw-bold">EcoSynth</h3>
+                            <p class="card-text">A game developed for a game jam, exploring environmental sustainability with engaging mechanics.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3 class="fw-bold">Void Borne</h3>
+                            <p class="card-text">Void Borne is a 2D game that combines souls-like with anime abilities, fighting to uncover the hidden dark truth about the world :O</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3 class="fw-bold">Instagram Downloader</h3>
+                            <p class="card-text">Instagram Downloader is a Python-based tool that downloads media from Instagram by reading URLs from a list.</p>
+                            <a href="https://github.com/Fintrosdev/instagramDownloader" target="_blank" class="btn btn-primary">View on GitHub</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3 class="fw-bold">2D to 3D Python Script</h3>
+                            <p class="card-text">A Python script that converts 2D images into 3D models using Depth estimation to create a 3D mesh.</p>
+                            <a href="https://github.com/Fintrosdev/2Dto3D" target="_blank" class="btn btn-primary">View on GitHub</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3 class="fw-bold">Dead Eye</h3>
+                            <p class="card-text">A fast-paced action shooter available on Itch.io.</p>
+                            <a href="https://tnt-programmer.itch.io/dead-eye" target="_blank" class="btn btn-primary">View Game</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3 class="fw-bold">YouTube Downloader</h3>
+                            <p class="card-text">A Python-based GUI tool that downloads videos from YouTube by reading links from a text file.</p>
+                            <a href="https://github.com/Fintrosdev/youtubeDownloader" target="_blank" class="btn btn-primary">View on GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="container text-center py-5">
+        <h2 class="fw-bold">Contact Me</h2>
+        <p>I'm open to collaborations and exciting game projects. Reach out to me!</p>
+        <p><strong>Email:</strong> phoenixgaming7821@gmail.com</p>
+        <p><strong>Phone:</strong> 9513153515</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-5">
+        <p>&copy; 2025 FIntros Dev</p>
+        <div>
+            <a href="https://www.instagram.com/fintros_dev/" class="btn btn-outline-primary" target="_blank">Instagram</a>
+        </div>
+    </footer>
+
+</body>
+</html>
