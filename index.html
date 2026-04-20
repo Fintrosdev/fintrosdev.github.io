@@ -3,11 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>FIntros Dev</title>
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap');
 
@@ -18,32 +15,111 @@ body {
     overflow-x: hidden;
 }
 
-/* BLACK HOLE CANVAS */
+/* ─── KILONOVA INTRO OVERLAY ─── */
+#kilonova-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* transition canvas — black hole eating the screen */
+#kn-transition {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    display: none;
+}
+
+#kn-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#kn-label {
+    position: relative;
+    z-index: 4;
+    text-align: center;
+    pointer-events: none;
+}
+
+#kn-label .title {
+    font-family: 'Inter', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(0,255,255,0.0);
+    text-shadow: 0 0 40px rgba(0,255,255,1), 0 0 80px rgba(0,120,255,0.6);
+    animation: labelFadeCyan 0.4s ease 1.6s forwards;
+}
+
+#kn-label .sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: rgba(0,255,255,0.0);
+    margin-top: 8px;
+    animation: labelFadeCyan 0.4s ease 1.9s forwards;
+}
+
+#kn-label .skip {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.2);
+    margin-top: 20px;
+    pointer-events: all;
+    cursor: pointer;
+    transition: color 0.3s, text-shadow 0.3s;
+    animation: labelFadeCyan 0.4s ease 2.2s forwards;
+}
+
+#kn-label .skip:hover {
+    color: rgba(0,255,255,0.9);
+    text-shadow: 0 0 12px rgba(0,255,255,0.6);
+}
+
+@keyframes labelFadeCyan {
+    to { color: rgba(0,255,255,0.7); }
+}
+
+/* ─── MAIN SITE (hidden until intro done) ─── */
+#site-wrapper {
+    display: none;
+}
+
+/* ─── BLACK HOLE CANVAS ─── */
 #bg {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 0; left: 0;
     z-index: -2;
 }
 
-/* CURSOR GLOW ONLY */
 .cursor-glow {
     position: fixed;
-    width: 300px;
-    height: 300px;
+    width: 300px; height: 300px;
     background: radial-gradient(circle, rgba(0,255,255,0.15), transparent 70%);
     pointer-events: none;
     transform: translate(-50%, -50%);
     z-index: -1;
 }
 
-/* NAVBAR */
 .navbar {
     backdrop-filter: blur(15px);
     background: rgba(20,20,20,0.6);
 }
 
-/* HERO */
 .hero {
     height: 100vh;
     display: flex;
@@ -52,12 +128,8 @@ body {
     text-align: center;
 }
 
-.hero h1 {
-    font-size: 4rem;
-    font-weight: 700;
-}
+.hero h1 { font-size: 4rem; font-weight: 700; }
 
-/* BUTTON */
 .btn-modern {
     background: linear-gradient(135deg, #00ffff, #0077ff);
     border: none;
@@ -72,7 +144,6 @@ body {
     box-shadow: 0 10px 25px rgba(0,255,255,0.4);
 }
 
-/* CARD */
 .card {
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.08);
@@ -83,225 +154,643 @@ body {
     color: #ffffff;
 }
 
-.card h4 {
-    color: #ffffff;
-    text-shadow: 0 0 8px rgba(0,255,255,0.4);
-}
+.card h4 { color: #ffffff; text-shadow: 0 0 8px rgba(0,255,255,0.4); }
+.card p  { color: #dcdcdc; }
+.card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
 
-.card p {
-    color: #dcdcdc;
-}
+section { padding: 100px 0; }
 
-.card:hover {
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-}
+.progress { background: rgba(255,255,255,0.05); }
+.progress-bar { background: linear-gradient(90deg, #00ffff, #0077ff); }
 
-/* SECTION */
-section {
-    padding: 100px 0;
-}
-
-/* SKILLS */
-.progress {
-    background: rgba(255,255,255,0.05);
-}
-
-.progress-bar {
-    background: linear-gradient(90deg, #00ffff, #0077ff);
-}
-
-/* SCROLL ANIMATION */
 .fade-up {
     opacity: 0;
     transform: translateY(40px);
     transition: 0.8s ease;
 }
-
-.fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
 </style>
 </head>
-
 <body>
 
-<canvas id="bg"></canvas>
-<div class="cursor-glow" id="glow"></div>
-
-<nav class="navbar navbar-dark fixed-top">
-<div class="container">
-<a class="navbar-brand fw-bold">FIntros Dev</a>
-</div>
-</nav>
-
-<header class="hero">
-<div>
-<h1 id="typewriter"></h1>
-<p class="mt-3">Game Developer • Systems Builder • Creator</p>
-
-<a href="#projects" class="btn btn-modern m-1">Projects</a>
-<a href="https://github.com/Fintrosdev" class="btn btn-modern m-1">GitHub</a>
-<a href="https://www.youtube.com/@FIntros_dev" class="btn btn-modern m-1">YouTube</a>
-</div>
-</header>
-
-<section class="container text-center fade-up">
-<h2 class="fw-bold mb-4">About</h2>
-<p style="max-width:700px; margin:auto;">
-I build gameplay systems that feel responsive, immersive, and alive.
-Unity, Python, AI — focused on real experiences.
-</p>
-</section>
-
-<section class="container fade-up">
-<h2 class="fw-bold text-center mb-4">Skills</h2>
-
-<div style="max-width:600px; margin:auto;">
-<p>Unity</p>
-<div class="progress mb-3"><div class="progress-bar" style="width:75%"></div></div>
-
-<p>Python</p>
-<div class="progress mb-3"><div class="progress-bar" style="width:98%"></div></div>
-
-<p>Video Editing</p>
-<div class="progress mb-3"><div class="progress-bar" style="width:90%"></div></div>
-</div>
-</section>
-
-<section id="projects" class="container text-center fade-up">
-<h2 class="fw-bold mb-5">Projects</h2>
-
-<div class="row g-4">
-
-<div class="col-md-6"><div class="card p-4 tilt"><h4>EcoSynth</h4><p>Game jam project.</p><a href="https://erfan-khodami.itch.io/ecosynth" class="btn btn-modern">View</a></div></div>
-
-<div class="col-md-6"><div class="card p-4 tilt"><h4>PROJECT M</h4><p>Coming 2027</p></div></div>
-
-<div class="col-md-6"><div class="card p-4 tilt"><h4>Instagram Downloader</h4><p>Python tool.</p><a href="https://github.com/Fintrosdev/instagramDownloader" class="btn btn-modern">GitHub</a></div></div>
-
-<div class="col-md-6"><div class="card p-4 tilt"><h4>2D → 3D Tool</h4><p>Depth mesh generator.</p><a href="https://github.com/Fintrosdev/2Dto3D" class="btn btn-modern">GitHub</a></div></div>
-
-<div class="col-md-6"><div class="card p-4 tilt"><h4>YouTube Downloader</h4><p>Python GUI tool.</p><a href="https://github.com/Fintrosdev/youtubeDownloader" class="btn btn-modern">GitHub</a></div></div>
-
-<!-- ONLY CHANGE -->
-<div class="col-md-6">
-<div class="card p-4 tilt">
-<h4>Launcher.exe</h4>
-<p>Standalone launcher for astrophysics sims.</p>
-<a href="https://drive.google.com/file/d/1BS76myna_YsAHPvC5TltB1wkNwmnRJPU/view?usp=sharing" target="_blank" class="btn btn-modern">Download</a>
-</div>
+<!-- ═══════════ KILONOVA INTRO ═══════════ -->
+<div id="kilonova-overlay">
+    <canvas id="kn-canvas"></canvas>
+    <canvas id="kn-transition"></canvas>
+    <div id="kn-label">
+        <div class="title">Kilonova</div>
+        <div class="sub">GW170817 — Neutron Star Merger</div>
+        <div class="skip" onclick="skipIntro()">skip →</div>
+    </div>
 </div>
 
+<!-- ═══════════ MAIN SITE ═══════════ -->
+<div id="site-wrapper">
+    <canvas id="bg"></canvas>
+    <div class="cursor-glow" id="glow"></div>
+
+    <nav class="navbar navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold">FIntros Dev</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div>
+            <h1 id="typewriter"></h1>
+            <p class="mt-3">Game Developer • Systems Builder • Creator</p>
+            <a href="#projects" class="btn btn-modern m-1">Projects</a>
+            <a href="https://github.com/Fintrosdev" class="btn btn-modern m-1">GitHub</a>
+            <a href="https://www.youtube.com/@FIntros_dev" class="btn btn-modern m-1">YouTube</a>
+        </div>
+    </header>
+
+    <section class="container text-center fade-up">
+        <h2 class="fw-bold mb-4">About</h2>
+        <p style="max-width:700px; margin:auto;">
+            I build gameplay systems that feel responsive, immersive, and alive.
+            Unity, Python, AI — focused on real experiences.
+        </p>
+    </section>
+
+    <section class="container fade-up">
+        <h2 class="fw-bold text-center mb-4">Skills</h2>
+        <div style="max-width:600px; margin:auto;">
+            <p>Unity</p>
+            <div class="progress mb-3"><div class="progress-bar" style="width:75%"></div></div>
+            <p>Python</p>
+            <div class="progress mb-3"><div class="progress-bar" style="width:98%"></div></div>
+            <p>Video Editing</p>
+            <div class="progress mb-3"><div class="progress-bar" style="width:90%"></div></div>
+        </div>
+    </section>
+
+    <section id="projects" class="container text-center fade-up">
+        <h2 class="fw-bold mb-5">Projects</h2>
+        <div class="row g-4">
+            <div class="col-md-6"><div class="card p-4 tilt"><h4>EcoSynth</h4><p>Game jam project.</p><a href="https://erfan-khodami.itch.io/ecosynth" class="btn btn-modern">View</a></div></div>
+            <div class="col-md-6"><div class="card p-4 tilt"><h4>PROJECT M</h4><p>Coming 2027</p></div></div>
+            <div class="col-md-6"><div class="card p-4 tilt"><h4>Instagram Downloader</h4><p>Python tool.</p><a href="https://github.com/Fintrosdev/instagramDownloader" class="btn btn-modern">GitHub</a></div></div>
+            <div class="col-md-6"><div class="card p-4 tilt"><h4>2D → 3D Tool</h4><p>Depth mesh generator.</p><a href="https://github.com/Fintrosdev/2Dto3D" class="btn btn-modern">GitHub</a></div></div>
+            <div class="col-md-6"><div class="card p-4 tilt"><h4>YouTube Downloader</h4><p>Python GUI tool.</p><a href="https://github.com/Fintrosdev/youtubeDownloader" class="btn btn-modern">GitHub</a></div></div>
+            <div class="col-md-6">
+                <div class="card p-4 tilt">
+                    <h4>Launcher.exe</h4>
+                    <p>Standalone launcher for astrophysics sims.</p>
+                    <a href="https://drive.google.com/file/d/1BS76myna_YsAHPvC5TltB1wkNwmnRJPU/view?usp=sharing" target="_blank" class="btn btn-modern">Download</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container text-center fade-up">
+        <h2 class="fw-bold mb-4">Contact</h2>
+        <p>Email: phoenixgaming7821@gmail.com</p>
+    </section>
+
+    <footer class="text-center py-4">
+        <p>© 2026 FIntros Dev</p>
+    </footer>
 </div>
-</section>
-
-<section class="container text-center fade-up">
-<h2 class="fw-bold mb-4">Contact</h2>
-<p>Email: phoenixgaming7821@gmail.com</p>
-</section>
-
-<footer class="text-center py-4">
-<p>© 2026 FIntros Dev</p>
-</footer>
 
 <script>
-/* BLACK HOLE */
-const canvas = document.getElementById("bg");
-const ctx = canvas.getContext("2d");
+/* ══════════════════════════════════════════
+   KILONOVA — VIOLENT EDITION
+   Cyan/blue palette to match site theme.
+   0.0–1.2s  : inspiral — stars streak, grav waves tear space
+   1.2s      : IMPACT — screen crack, full-white flash, brutal shake
+   1.2–1.8s  : secondary shockwaves + chromatic blast
+   1.8–5.5s  : kilonova fireball (cyan core), 4 jets, dense debris storm
+   5.5–6.5s  : vicious cut to site
+══════════════════════════════════════════ */
+const kCanvas  = document.getElementById('kn-canvas');
+const kCtx     = kCanvas.getContext('2d');
+const trCanvas = document.getElementById('kn-transition');
+const trCtx    = trCanvas.getContext('2d');
+const overlay  = document.getElementById('kilonova-overlay');
 
-function resize(){
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+function setSize() {
+    kCanvas.width = trCanvas.width = window.innerWidth;
+    kCanvas.height = trCanvas.height = window.innerHeight;
+    cx = kCanvas.width / 2;
+    cy = kCanvas.height / 2;
 }
-resize();
-window.addEventListener("resize", resize);
+let cx, cy;
+setSize();
+window.addEventListener('resize', setSize);
 
-let center = {x: canvas.width/2, y: canvas.height/2};
+const startTime = performance.now();
 
-let particles = [];
-for(let i=0;i<700;i++){
-    particles.push({
-        r: Math.random()*400+80,
-        angle: Math.random()*Math.PI*2,
-        speed: 0.0015 + Math.random()*0.002,
-        size: Math.random()*1.5+0.5
-    });
+/* ── star field ── */
+let bgStars = [];
+function buildStars() {
+    bgStars = Array.from({length: 700}, () => ({
+        x: Math.random() * kCanvas.width,
+        y: Math.random() * kCanvas.height,
+        r: Math.random() * 1.3,
+        a: 0.3 + Math.random() * 0.7,
+        flicker: Math.random() * Math.PI * 2
+    }));
 }
+buildStars();
 
-function animate(){
-    ctx.fillStyle="rgba(5,5,5,0.15)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    particles.forEach(p=>{
-        let gravity = 0.0008*(300/p.r);
-        p.angle += p.speed + gravity;
-        p.r *= 0.998;
-
-        if(p.r<25){
-            p.r=Math.random()*400+150;
-            p.angle=Math.random()*Math.PI*2;
-        }
-
-        let x=center.x+Math.cos(p.angle)*p.r;
-        let y=center.y+Math.sin(p.angle)*p.r;
-
-        let alpha=1-(p.r/450);
-
-        ctx.beginPath();
-        ctx.arc(x,y,p.size,0,Math.PI*2);
-        ctx.fillStyle=`rgba(0,255,255,${alpha})`;
-        ctx.fill();
-    });
-
-    requestAnimationFrame(animate);
-}
-animate();
-
-/* GLOW */
-const glow=document.getElementById("glow");
-document.addEventListener("mousemove",e=>{
-    glow.style.left=e.clientX+"px";
-    glow.style.top=e.clientY+"px";
-});
-
-/* TYPEWRITER */
-const text="FIntros Dev";
-let i=0;
-function type(){
-    if(i<text.length){
-        document.getElementById("typewriter").innerHTML+=text[i];
-        i++;
-        setTimeout(type,70);
+/* ── ejecta ── */
+let ejecta = [];
+function spawnEjecta(count, speed, colorFn, lifeRange, spread = Math.PI * 2, dir = 0) {
+    for (let i = 0; i < count; i++) {
+        const angle = dir + (Math.random() - 0.5) * spread;
+        const spd   = speed * (0.4 + Math.random() * 0.8);
+        const life  = lifeRange[0] + Math.random() * (lifeRange[1] - lifeRange[0]);
+        ejecta.push({
+            x: cx, y: cy,
+            vx: Math.cos(angle) * spd,
+            vy: Math.sin(angle) * spd,
+            life, maxLife: life,
+            r: 0.6 + Math.random() * 2.5,
+            tail: Math.random() < 0.35,
+            colorFn
+        });
     }
 }
-type();
 
-/* SCROLL */
-const faders=document.querySelectorAll(".fade-up");
-window.addEventListener("scroll",()=>{
-    faders.forEach(el=>{
-        if(el.getBoundingClientRect().top<window.innerHeight-100){
-            el.classList.add("visible");
+/* ── ripples ── */
+let ripples = [];
+function spawnRipple(strength, speed = 9, color = '0,255,255') {
+    ripples.push({
+        r: 0,
+        maxR: Math.max(kCanvas.width, kCanvas.height),
+        strength, speed, color,
+        lineW: 1 + strength * 3
+    });
+}
+
+/* ── shockwave rings (violent, thick) ── */
+let shocks = [];
+function spawnShock() {
+    shocks.push({ r: 0, alpha: 1 });
+}
+
+/* ── jets ── */
+let jets = [];
+function spawnJets(count = 4) {
+    for (let i = 0; i < count; i++) {
+        const base = (i / count) * Math.PI * 2;
+        jets.push({
+            angle: base + (Math.random() - 0.5) * 0.4,
+            progress: 0,
+            alpha: 1,
+            width: 4 + Math.random() * 6
+        });
+    }
+}
+
+/* ── chromatic aberration flash ── */
+let chromatic = 0;
+
+/* ── state ── */
+let mergerFlash  = 0;
+let fireball     = { r: 0, active: false };
+let phase        = 'inspiral';
+let rafId;
+
+/* ════════════════ DRAW LOOP ════════════════ */
+function drawKilonova(now) {
+    rafId = requestAnimationFrame(drawKilonova); // schedule FIRST so errors never kill loop
+    try {
+    const t = (now - startTime) / 1000;
+
+    kCtx.clearRect(0, 0, kCanvas.width, kCanvas.height);
+    kCtx.fillStyle = '#00000a';
+    kCtx.fillRect(0, 0, kCanvas.width, kCanvas.height);
+
+    /* star field — flicker near merger */
+    const flickerAmt = phase === 'inspiral' ? 0 : 1;
+    bgStars.forEach(s => {
+        s.flicker += 0.05;
+        const fa = s.a + Math.sin(s.flicker) * 0.3 * flickerAmt;
+        kCtx.beginPath();
+        kCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        kCtx.fillStyle = `rgba(200,230,255,${fa})`;
+        kCtx.fill();
+    });
+
+    /* gravitational wave ripples */
+    ripples = ripples.filter(rp => rp.r < rp.maxR);
+    ripples.forEach(rp => {
+        rp.r += rp.speed;
+        const a = rp.strength * (1 - rp.r / rp.maxR);
+        kCtx.beginPath();
+        kCtx.arc(cx, cy, rp.r, 0, Math.PI * 2);
+        kCtx.strokeStyle = `rgba(${rp.color},${a * 0.7})`;
+        kCtx.lineWidth = rp.lineW * (1 - rp.r / rp.maxR) + 0.5;
+        kCtx.shadowColor = `rgba(${rp.color},${a})`;
+        kCtx.shadowBlur  = 12;
+        kCtx.stroke();
+        kCtx.shadowBlur = 0;
+    });
+
+    /* brutal shockwave rings */
+    shocks = shocks.filter(s => s.alpha > 0.01);
+    shocks.forEach(s => {
+        s.r += 18;
+        s.alpha *= 0.91;
+        kCtx.beginPath();
+        kCtx.arc(cx, cy, s.r, 0, Math.PI * 2);
+        kCtx.strokeStyle = `rgba(0,255,255,${s.alpha})`;
+        kCtx.lineWidth = 6 * s.alpha;
+        kCtx.shadowColor = '#00ffff';
+        kCtx.shadowBlur  = 30 * s.alpha;
+        kCtx.stroke();
+        kCtx.shadowBlur = 0;
+    });
+
+    /* ejecta — draw tails */
+    ejecta = ejecta.filter(p => p.life > 0);
+    ejecta.forEach(p => {
+        if (p.tail) {
+            kCtx.beginPath();
+            kCtx.moveTo(p.x, p.y);
+            kCtx.lineTo(p.x - p.vx * 4, p.y - p.vy * 4);
+            const ratio = p.life / p.maxLife;
+            kCtx.strokeStyle = p.colorFn(ratio * 0.5);
+            kCtx.lineWidth = p.r * 0.5;
+            kCtx.stroke();
         }
+        p.x += p.vx; p.y += p.vy;
+        p.vx *= 0.996; p.vy *= 0.996;
+        p.life -= 16;
+        const ratio = p.life / p.maxLife;
+        kCtx.beginPath();
+        kCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        kCtx.fillStyle = p.colorFn(ratio);
+        kCtx.fill();
     });
-});
 
-/* TILT */
-document.querySelectorAll(".tilt").forEach(card=>{
-    card.addEventListener("mousemove",e=>{
-        const rect=card.getBoundingClientRect();
-        const x=e.clientX-rect.left;
-        const y=e.clientY-rect.top;
-        const rx=-(y/rect.height-0.5)*10;
-        const ry=(x/rect.width-0.5)*10;
-        card.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg) scale(1.03)`;
+    /* jets */
+    jets.forEach(j => {
+        j.progress = Math.min(j.progress + 0.03, 1);
+        j.alpha   *= 0.989;
+        const len  = j.progress * Math.max(kCanvas.width, kCanvas.height) * 0.7;
+        const ex   = cx + Math.cos(j.angle) * len;
+        const ey   = cy + Math.sin(j.angle) * len;
+        const grd  = kCtx.createLinearGradient(cx, cy, ex, ey);
+        grd.addColorStop(0,   `rgba(255,255,255,${j.alpha})`);
+        grd.addColorStop(0.1, `rgba(0,255,255,${j.alpha * 0.9})`);
+        grd.addColorStop(0.5, `rgba(0,120,255,${j.alpha * 0.5})`);
+        grd.addColorStop(1,   'rgba(0,0,0,0)');
+        kCtx.beginPath();
+        kCtx.moveTo(cx, cy);
+        kCtx.lineTo(ex, ey);
+        kCtx.strokeStyle = grd;
+        kCtx.lineWidth   = j.width * j.alpha;
+        kCtx.shadowColor = '#00ffff';
+        kCtx.shadowBlur  = 20 * j.alpha;
+        kCtx.stroke();
+        kCtx.shadowBlur  = 0;
     });
-    card.addEventListener("mouseleave",()=>{
-        card.style.transform="rotateX(0) rotateY(0) scale(1)";
+
+    /* fireball */
+    if (fireball.active && fireball.r > 1) {
+        fireball.r += 5;
+        const age  = t - 1.8;
+        const fade = Math.max(0, 1 - age / 4.2);
+        const fb   = kCtx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(1, fireball.r));
+        fb.addColorStop(0,    `rgba(255,255,255,${fade * 0.95})`);
+        fb.addColorStop(0.15, `rgba(0,255,255,${fade * 0.85})`);
+        fb.addColorStop(0.4,  `rgba(0,120,255,${fade * 0.6})`);
+        fb.addColorStop(0.7,  `rgba(0,40,120,${fade * 0.3})`);
+        fb.addColorStop(1,    'rgba(0,0,0,0)');
+        kCtx.beginPath();
+        kCtx.arc(cx, cy, fireball.r, 0, Math.PI * 2);
+        kCtx.fillStyle = fb;
+        kCtx.fill();
+    } else if (fireball.active) {
+        fireball.r += 5;
+    }
+
+    /* chromatic aberration — twin offset flashes */
+    if (chromatic > 0) {
+        const off = chromatic * 18;
+        kCtx.globalCompositeOperation = 'screen';
+        kCtx.fillStyle = `rgba(0,255,255,${chromatic * 0.3})`;
+        kCtx.fillRect(-off, 0, kCanvas.width, kCanvas.height);
+        kCtx.fillStyle = `rgba(255,0,100,${chromatic * 0.2})`;
+        kCtx.fillRect(off, 0, kCanvas.width, kCanvas.height);
+        kCtx.globalCompositeOperation = 'source-over';
+        chromatic -= 0.04;  // slower decay = longer aberration burn
+        if (chromatic < 0) chromatic = 0;
+    }
+
+    /* merger white flash */
+    if (mergerFlash > 0) {
+        kCtx.fillStyle = `rgba(255,255,255,${mergerFlash})`;
+        kCtx.fillRect(0, 0, kCanvas.width, kCanvas.height);
+        mergerFlash -= 0.055;
+    }
+
+    /* ─ INSPIRAL ─ */
+    if (t < 1.2 && phase === 'inspiral') {
+        const prog = t / 1.2;
+        const sep  = 200 * Math.pow(1 - prog, 1.8);
+        const spd  = 1.5 + prog * 18;
+        const ang  = t * spd;
+
+        for (let i = 0; i < 2; i++) {
+            const a  = ang + (i === 0 ? 0 : Math.PI);
+            const sx = cx + Math.cos(a) * sep;
+            const sy = cy + Math.sin(a) * sep;
+
+            /* motion streak */
+            const trailLen = 5 + prog * 20;
+            for (let tr = 0; tr < trailLen; tr++) {
+                const ta   = ang - tr * 0.06 + (i === 0 ? 0 : Math.PI);
+                const tsep = sep * (1 + tr * 0.01);
+                const tx   = cx + Math.cos(ta) * tsep;
+                const ty   = cy + Math.sin(ta) * tsep;
+                const ta2  = (1 - tr / trailLen) * 0.4;
+                kCtx.beginPath();
+                kCtx.arc(tx, ty, 2, 0, Math.PI * 2);
+                kCtx.fillStyle = i === 0
+                    ? `rgba(0,200,255,${ta2})`
+                    : `rgba(0,255,180,${ta2})`;
+                kCtx.fill();
+            }
+
+            /* glow halo */
+            const glowR = Math.max(2, 20 + prog * 30);
+            const grd   = kCtx.createRadialGradient(sx, sy, 0, sx, sy, glowR);
+            grd.addColorStop(0, i === 0 ? `rgba(0,200,255,${0.5+prog*0.4})` : `rgba(0,255,200,${0.5+prog*0.4})`);
+            grd.addColorStop(1, 'rgba(0,0,0,0)');
+            kCtx.beginPath();
+            kCtx.arc(sx, sy, glowR, 0, Math.PI * 2);
+            kCtx.fillStyle = grd;
+            kCtx.fill();
+
+            /* hard core */
+            kCtx.beginPath();
+            kCtx.arc(sx, sy, 4 + prog * 3, 0, Math.PI * 2);
+            kCtx.fillStyle = '#ffffff';
+            kCtx.shadowColor = i === 0 ? '#00ffff' : '#00ffaa';
+            kCtx.shadowBlur  = 25 + prog * 20;
+            kCtx.fill();
+            kCtx.shadowBlur = 0;
+        }
+
+        /* increasing grav-wave frequency */
+        const rippleChance = 0.3 + prog * 0.9;
+        if (Math.random() < rippleChance * 0.3) {
+            spawnRipple(0.2 + prog * 0.6, 7 + prog * 6, '0,200,255');
+        }
+    }
+
+    /* ─ MERGER TRIGGER ─ */
+    if (t >= 1.2 && phase === 'inspiral') {
+        phase = 'merger';
+
+        /* BRUTAL flash */
+        mergerFlash = 1.2;
+        chromatic   = 1.5;
+
+        /* 8 concentric shocks */
+        for (let i = 0; i < 8; i++) setTimeout(() => spawnShock(), i * 55);
+
+        /* ripple barrage — dense */
+        for (let i = 0; i < 10; i++) setTimeout(() => spawnRipple(0.8 + Math.random() * 0.4, 12 + i * 4, '0,255,255'), i * 40);
+
+        /* initial burst — much faster, denser */
+        spawnEjecta(900, 22, r => `rgba(0,${Math.floor(180+r*75)},255,${r * 0.95})`, [400, 1000]);
+        spawnEjecta(400, 32, r => `rgba(255,255,255,${r * 0.9})`,                    [200, 500]);
+        spawnEjecta(300, 14, r => `rgba(0,255,${Math.floor(200+r*55)},${r * 0.8})`,  [600, 1200]);
+
+        /* second wave after 250ms */
+        setTimeout(() => {
+            for (let i = 0; i < 5; i++) setTimeout(() => spawnShock(), i * 50);
+            spawnEjecta(600, 18, r => `rgba(0,${Math.floor(120+r*135)},255,${r * 0.85})`, [600, 1600]);
+            spawnEjecta(200, 8,  r => `rgba(100,200,255,${r * 0.65})`,                     [1200, 2500]);
+            fireball.active = true;
+            spawnJets(4);
+            phase = 'kilonova';
+        }, 250);
+    }
+
+    /* ─ KILONOVA ONGOING DEBRIS ─ */
+    if (phase === 'kilonova' && Math.random() < 0.55) {
+        spawnEjecta(5, 4 + Math.random() * 8,
+            r => `rgba(0,${Math.floor(150+r*105)},255,${r * 0.6})`,
+            [500, 1100]);
+    }
+
+    /* ─ END ─ */
+    if (t >= 5.5 && phase !== 'done') {
+        phase = 'done';
+        endIntro();
+    }
+
+    } catch(e) { /* swallow frame errors */ }
+}
+
+rafId = requestAnimationFrame(drawKilonova);
+
+function endIntro() {
+    cancelAnimationFrame(rafId);
+
+    launchSite();  // boot site silently behind overlay
+
+    trCanvas.style.display = 'block';
+
+    const sw = document.getElementById('site-wrapper');
+    sw.style.opacity = '0';
+    sw.style.transition = 'none';
+
+    const maxR   = Math.hypot(kCanvas.width, kCanvas.height) * 0.62;
+    const startT = performance.now();
+    const dur    = 1100; // faster — 1.1s
+
+    const tParticles = Array.from({length: 700}, () => ({
+        r: 30 + Math.random() * 350,
+        angle: Math.random() * Math.PI * 2,
+        speed: 0.005 + Math.random() * 0.006,
+        size:  0.5 + Math.random() * 2
+    }));
+
+    function drawTransition(now) {
+        const elapsed = now - startT;
+        const p       = Math.min(elapsed / dur, 1);
+        // aggressive ease — fast start, slow end
+        const ease    = 1 - Math.pow(1 - p, 3);
+        const holeR   = ease * maxR;
+
+        trCtx.clearRect(0, 0, trCanvas.width, trCanvas.height);
+
+        // ── black disc punches through first ──
+        trCtx.save();
+        trCtx.beginPath();
+        trCtx.arc(cx, cy, holeR, 0, Math.PI * 2);
+        trCtx.fillStyle = '#000000';
+        trCtx.fill();
+        trCtx.restore();
+
+        if (holeR > 10) {
+            // ── intense glowing accretion ring ──
+            const ringW = Math.max(8, 50 * (1 - ease * 0.7));
+            const ringInner = Math.max(0, holeR - ringW * 0.5);
+            const ringOuter = Math.max(ringInner + 1, holeR + ringW * 2.5);
+            const ring  = trCtx.createRadialGradient(cx, cy, ringInner, cx, cy, ringOuter);
+            ring.addColorStop(0,    'rgba(0,0,0,0)');
+            ring.addColorStop(0.25, `rgba(255,255,255,${0.9 * (1 - ease * 0.4)})`);
+            ring.addColorStop(0.45, `rgba(0,255,255,${1.0 * (1 - ease * 0.3)})`);
+            ring.addColorStop(0.65, `rgba(0,100,255,${0.7 * (1 - ease * 0.3)})`);
+            ring.addColorStop(1,    'rgba(0,0,0,0)');
+            trCtx.beginPath();
+            trCtx.arc(cx, cy, holeR + ringW * 2.5, 0, Math.PI * 2);
+            trCtx.fillStyle = ring;
+            trCtx.fill();
+
+            // ── outer gravitational lensing glow ──
+            const lensR = holeR + ringW * 6;
+            const lens  = trCtx.createRadialGradient(cx, cy, Math.max(0, holeR), cx, cy, lensR);
+            lens.addColorStop(0,   `rgba(0,255,255,${0.15 * (1 - ease * 0.5)})`);
+            lens.addColorStop(0.5, `rgba(0,60,120,${0.08 * (1 - ease * 0.5)})`);
+            lens.addColorStop(1,   'rgba(0,0,0,0)');
+            trCtx.beginPath();
+            trCtx.arc(cx, cy, lensR, 0, Math.PI * 2);
+            trCtx.fillStyle = lens;
+            trCtx.fill();
+
+            // ── dense spiralling particles on the rim ──
+            tParticles.forEach(tp => {
+                tp.angle += tp.speed + 0.001 * (150 / Math.max(tp.r, 10));
+                tp.r    *= 0.998;
+                if (tp.r < holeR * 0.4) { tp.r = holeR * 0.5 + Math.random() * 250; tp.angle = Math.random() * Math.PI * 2; }
+                const tx = cx + Math.cos(tp.angle) * tp.r;
+                const ty = cy + Math.sin(tp.angle) * tp.r;
+                const d  = Math.abs(tp.r - holeR);
+                if (d < 80) {
+                    const pa = (1 - d / 80) * (1 - ease * 0.2);
+                    const inside = tp.r < holeR;
+                    trCtx.beginPath();
+                    trCtx.arc(tx, ty, tp.size, 0, Math.PI * 2);
+                    trCtx.fillStyle = inside
+                        ? `rgba(0,255,255,${pa * 0.5})`
+                        : `rgba(0,255,255,${pa})`;
+                    trCtx.fill();
+                }
+            });
+        }
+
+        // ── reveal site through the hole ──
+        if (p >= 0.7) {
+            const revealP = (p - 0.7) / 0.3;
+            overlay.style.opacity = String(1 - revealP);
+            sw.style.opacity      = String(revealP);
+        }
+
+        if (p < 1) {
+            requestAnimationFrame(drawTransition);
+        } else {
+            overlay.style.display = 'none';
+            trCanvas.style.display = 'none';
+            sw.style.opacity = '1';
+            sw.style.transition = '';
+        }
+    }
+
+    requestAnimationFrame(drawTransition);
+}
+
+function skipIntro() { endIntro(); }
+
+/* ══════════════════════════════════════════
+   MAIN SITE INIT
+══════════════════════════════════════════ */
+function launchSite() {
+    const sw = document.getElementById('site-wrapper');
+    sw.style.display = 'block';
+    initBlackHole();
+    initGlow();
+    initTypewriter();
+    initScroll();
+    initTilt();
+}
+
+function initBlackHole() {
+    const canvas = document.getElementById("bg");
+    const ctx = canvas.getContext("2d");
+
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener("resize", resize);
+
+    let center = { x: canvas.width / 2, y: canvas.height / 2 };
+    let particles = [];
+    for (let i = 0; i < 700; i++) {
+        particles.push({ r: Math.random()*400+80, angle: Math.random()*Math.PI*2, speed: 0.0015+Math.random()*0.002, size: Math.random()*1.5+0.5 });
+    }
+
+    function animate() {
+        ctx.fillStyle = "rgba(5,5,5,0.15)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            let gravity = 0.0008 * (300 / p.r);
+            p.angle += p.speed + gravity;
+            p.r *= 0.998;
+            if (p.r < 25) { p.r = Math.random()*400+150; p.angle = Math.random()*Math.PI*2; }
+            let x = center.x + Math.cos(p.angle) * p.r;
+            let y = center.y + Math.sin(p.angle) * p.r;
+            let alpha = 1 - (p.r / 450);
+            ctx.beginPath();
+            ctx.arc(x, y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0,255,255,${alpha})`;
+            ctx.fill();
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+}
+
+function initGlow() {
+    const glow = document.getElementById("glow");
+    document.addEventListener("mousemove", e => {
+        glow.style.left = e.clientX + "px";
+        glow.style.top  = e.clientY + "px";
     });
-});
+}
+
+function initTypewriter() {
+    const text = "FIntros Dev";
+    let i = 0;
+    function type() {
+        if (i < text.length) {
+            document.getElementById("typewriter").innerHTML += text[i];
+            i++;
+            setTimeout(type, 70);
+        }
+    }
+    type();
+}
+
+function initScroll() {
+    const faders = document.querySelectorAll(".fade-up");
+    function check() {
+        faders.forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add("visible");
+        });
+    }
+    window.addEventListener("scroll", check);
+    check();
+}
+
+function initTilt() {
+    document.querySelectorAll(".tilt").forEach(card => {
+        card.addEventListener("mousemove", e => {
+            const rect = card.getBoundingClientRect();
+            const rx = -((e.clientY - rect.top) / rect.height - 0.5) * 10;
+            const ry =  ((e.clientX - rect.left) / rect.width  - 0.5) * 10;
+            card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) scale(1.03)`;
+        });
+        card.addEventListener("mouseleave", () => { card.style.transform = "rotateX(0) rotateY(0) scale(1)"; });
+    });
+}
 </script>
-
 </body>
 </html>
