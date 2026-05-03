@@ -240,6 +240,14 @@ section { padding: 100px 0; }
                     <a href="https://drive.google.com/file/d/1BS76myna_YsAHPvC5TltB1wkNwmnRJPU/view?usp=sharing" target="_blank" class="btn btn-modern">Download</a>
                 </div>
             </div>
+            <!-- NEW: SHM Spring Simulation -->
+            <div class="col-md-6">
+                <div class="card p-4 tilt">
+                    <h4> SHM Spring Simulation</h4>
+                    <p>Interactive harmonic oscillator with phasor diagrams & real-time graphs.</p>
+                    <a href="https://drive.google.com/file/d/1XEyTAN7_rPUZV2Re9IIIBFjtcM_yv84K/view?usp=sharing" target="_blank" class="btn btn-modern">Download</a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -699,6 +707,15 @@ function endIntro() {
 }
 
 function skipIntro() { endIntro(); }
+
+/* Download simulation function */
+function simulateDownload() {
+    // Simulate download - in production, link to actual .exe file
+    alert("Spring Simulation .exe download would start here.\n\nTo get the actual .exe, compile the Python script using PyInstaller:\n\npip install pyinstaller\npyinstaller --onefile --windowed --name \"SpringPhysics\" spring_simulator.py\n\nThen host the .exe and update the download link.");
+    
+    // You can replace this with an actual download link when ready
+    // window.location.href = "https://your-host.com/SpringPhysics.exe";
+}
 
 /* ══════════════════════════════════════════
    MAIN SITE INIT
